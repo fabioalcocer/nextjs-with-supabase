@@ -1,36 +1,22 @@
-import DeployButton from '../components/DeployButton'
-import AuthButton from '../components/AuthButton'
 import { createClient } from '@/utils/supabase/server'
-import ConnectSupabaseSteps from '@/components/tutorial/ConnectSupabaseSteps'
 import SignUpUserSteps from '@/components/tutorial/SignUpUserSteps'
 import Header from '@/components/Header'
+import AuthButton from '@/components/AuthButton'
 
 export default async function Index() {
-  const supabase = createClient()
-  const { data: notes } = await supabase.from('notes').select()
-
   return (
     <div className='flex-1 w-full flex flex-col gap-20 items-center'>
-      <nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'></nav>
+      <nav className='w-full flex justify-center border-b border-b-foreground/10 h-16'>
+        <div className='w-full max-w-4xl flex justify-between items-center p-3 text-sm'>
+          <AuthButton />
+        </div>
+      </nav>
 
       <div className='flex-1 flex flex-col gap-20 max-w-4xl px-3'>
         <Header />
         <main className='flex-1 flex flex-col gap-6'>
           <h2 className='font-bold text-4xl mb-4'>Next steps</h2>
           <SignUpUserSteps />
-
-          <h3 className='font-bold text-2xl mt-10'>Notes from Supabase</h3>
-          <div className='flex flex-col gap-4'>
-            {notes?.map((note) => (
-              <div
-                key={note.id}
-                className='border-slate-600/50 p-4 rounded-lg border'
-              >
-                <p className='font-bold'>{note.title}</p>
-                <p className='text-gray-200'>{note.description}</p>
-              </div>
-            ))}
-          </div>
         </main>
       </div>
 
