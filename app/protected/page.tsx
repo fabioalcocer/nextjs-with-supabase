@@ -1,9 +1,9 @@
-import DeployButton from '@/components/DeployButton'
 import AuthButton from '@/components/AuthButton'
 import { createClient } from '@/utils/supabase/server'
 import FetchDataSteps from '@/components/tutorial/FetchDataSteps'
 import Header from '@/components/Header'
 import { redirect } from 'next/navigation'
+import { SubmitButton } from '../login/submit-button'
 
 export default async function ProtectedPage() {
   const supabase = createClient()
@@ -15,6 +15,17 @@ export default async function ProtectedPage() {
 
   if (!user) {
     return redirect('/login')
+  }
+
+  const addDisplayName = async () => {
+    'use server'
+    const supabase = createClient()
+
+    const { data } = await supabase.auth.updateUser({
+      data: { displayName: 'Fabio Alcocer' },
+    })
+
+    console.log(data)
   }
 
   return (
@@ -45,6 +56,14 @@ export default async function ProtectedPage() {
               </div>
             ))}
           </div>
+
+          <SubmitButton
+            formAction={addDisplayName}
+            className='border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2 max-w-max'
+            pendingText='Signing Up...'
+          >
+            Add display name
+          </SubmitButton>
         </main>
       </div>
 
